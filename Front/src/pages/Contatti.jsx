@@ -50,7 +50,7 @@ export default function Contatti() {
           <h2 className="text-2xl font-bold text-gray-800 mb-6">Invia un Messaggio</h2>
           <form className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome Completo</label>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome Completo!!!</label>
               <input
                 type="text"
                 id="name"
