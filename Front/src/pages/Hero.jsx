@@ -1,4 +1,6 @@
 import React from 'react'
+import heroImg from '../public/images/freepik-export-20240828101423gt3o.jpeg'
+
 
 export default function Hero() {
   return (
@@ -21,12 +23,12 @@ export default function Hero() {
             </a>
           </div>
         </div>
-        
+
         {/* Sezione Immagine */}
         <div className="mt-12 ml-4 lg:mt-0 lg:w-1/2">
           <img
             className="w-full h-auto rounded-lg shadow-lg"
-            src="https://via.placeholder.com/600x400.png?text=Assicurazione+Immagine"
+            src={heroImg}
             alt="Assicurazione Immagine"
           />
         </div>

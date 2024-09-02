@@ -33,7 +33,7 @@ export default function Home() {
             <img src={post.cover} alt={post.title} className="post-image w-full h-48 object-cover" />
             <div className="post-content p-4">
               <h2 className="text-xl font-semibold">{post.title}</h2>
-              <p className="text-gray-500 mt-2">Autore: {post.author}</p>
+              <p className="text-gray-500 mt-2">Categoria: {post.category}</p>
             </div>
           </Link>
         ))}

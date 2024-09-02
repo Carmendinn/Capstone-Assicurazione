@@ -53,7 +53,7 @@ export default function DettagliServizio() {
               <strong>Autore:</strong> {post.author}
             </span>
             <span className="block">
-              <strong>Tempo di lettura:</strong> {post.readTime.value} {post.readTime.unit}
+              <strong>Tempo di lettura:</strong> {post.readTime?.value} {post.readTime?.unit}
             </span>
           </div>
 
