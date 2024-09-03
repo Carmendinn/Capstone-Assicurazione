@@ -14,14 +14,6 @@ export default function Hero() {
           <p className="mt-6 text-lg text-gray-600">
             Affidati alla nostra esperienza per trovare l'assicurazione che fa per te. Offriamo piani personalizzati per privati e aziende.
           </p>
-          <div className="mt-8">
-            <a
-              href="#"
-              className="bg-gray-600 text-white px-8 py-3 rounded-md text-lg font-semibold hover:bg-gray-700"
-            >
-              Scopri di più
-            </a>
-          </div>
         </div>
 
         {/* Sezione Immagine */}

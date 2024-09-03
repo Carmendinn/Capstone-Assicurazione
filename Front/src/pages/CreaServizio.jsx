@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { createPost } from "../services/api";
+import { createPost, getMe } from "../services/api";
 
 export default function CreaServizio() {
   const [servizio, setServizio] = useState({
@@ -9,8 +9,23 @@ export default function CreaServizio() {
     content: '',
     duration: '',
     terms: '',
-    price: '' // Campo opzionale per il prezzo
+    price: '', // Campo opzionale per il prezzo
+    author: '' // Campo per l'email dell'autore
   });
+
+  useEffect(() => {
+    const fetchUserEmail = async () => {
+      try {
+        const userData = await getMe();
+        setServizio((prevServizio) => ({ ...prevServizio, author: userData.email }));
+      } catch (error) {
+        console.error("Errore nel recupero dei dati utente:", error);
+        navigate("/login");
+      }
+    };
+    fetchUserEmail();
+  }, [navigate]);
+
   const [coverFile, setCoverFile] = useState(null);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -19,6 +34,7 @@ export default function CreaServizio() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Aggiornamento generale per i campi del servizio
     setServizio({ ...servizio, [name]: value });
   };
 

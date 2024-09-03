@@ -1,36 +1,56 @@
 import { useState, useEffect } from "react";
-// Importa useParams per accedere ai parametri dell'URL
-import { useParams } from "react-router-dom";
-// Importo la funzione getPost dal mio file services/api
-import { getPost } from "../services/api";
-
-import React from 'react'
+import { useParams, useNavigate } from "react-router-dom"; // Aggiungi useNavigate per gestire la navigazione
+import { getPost, deletePost } from "../services/api"; // Importa la funzione deletePost per eliminare i post
 
 export default function DettagliServizio() {
   const [post, setPost] = useState(null);
-
-  // Estrae l'id del post dai parametri dell'URL
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate(); // Aggiungi navigate per gestire la navigazione
 
-  // Effect hook per fetchare i dati del post quando il componente viene montato o l'id cambia
+  useEffect(() => {
+    // Controlla se esiste un token nel localStorage (se è loggato)
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    };
+
+    // Controlla lo stato di login all'avvio
+    checkLoginStatus();
+
+    // Aggiungi un event listener per controllare lo stato di login
+    window.addEventListener("storage", checkLoginStatus);
+
+    // Rimuovi l'event listener quando il componente viene smontato
+    return () => {
+      window.removeEventListener("storage", checkLoginStatus);
+    };
+  }, []);
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        // Effettua una richiesta GET al backend per ottenere i dettagli del post
         const response = await getPost(id);
-        // Aggiorna lo stato con i dati del post
         setPost(response.data);
       } catch (error) {
-        // Logga eventuali errori nella console
         console.error("Errore nella fetch del post:", error);
       }
     };
-    // Chiama la funzione fetchPost
     fetchPost();
-  }, [id]); // L'effetto si attiva quando l'id cambia
+  }, [id]);
 
-  // Se il post non è ancora stato caricato, mostra un messaggio di caricamento
+  const handleDelete = async () => {
+    try {
+      await deletePost(id); // Elimina il post tramite la funzione deletePost
+      navigate("/"); // Torna alla pagina principale dopo l'eliminazione
+    } catch (error) {
+      console.error("Errore durante l'eliminazione del post:", error);
+      alert("Errore durante l'eliminazione del post. Riprova.");
+    }
+  };
+
   if (!post) return <div>Caricamento...</div>;
+
   return (
     <div className="container mx-auto p-8 mt-10">
       <article className="post-detail bg-white rounded-lg shadow-lg overflow-hidden">
@@ -52,9 +72,6 @@ export default function DettagliServizio() {
             <span className="block">
               <strong>Autore:</strong> {post.author}
             </span>
-            <span className="block">
-              <strong>Tempo di lettura:</strong> {post.readTime?.value} {post.readTime?.unit}
-            </span>
           </div>
 
           {/* Contenuto del post */}
@@ -62,9 +79,26 @@ export default function DettagliServizio() {
             className="post-content prose prose-lg max-w-none text-gray-700"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
+          {/* Se l'utente è loggato, mostra i pulsanti Modifica ed Elimina */}
+          {isLoggedIn ? (
+            <div className="mt-6 flex space-x-4">
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                onClick={() => navigate(`/post/edit/${id}`)}
+              >
+                Modifica
+              </button>
+              <button
+                className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600"
+                onClick={handleDelete}
+              >
+                Elimina
+              </button>
+            </div>
+          ) : null /* Se non è loggato, non mostra nulla */}
         </div>
       </article>
     </div>
-
-  )
+  );
 }

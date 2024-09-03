@@ -8,6 +8,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import serviziRoutes from './routes/serviziRoutes.js';
 import clientiRoutes from './routes/clientiRoutes.js';
+import authRoutes from "./routes/authRoutes.js";
+import session from "express-session"; // Importiamo session
+import passport from "./config/passportConfig.js";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,11 +22,27 @@ const app = express();  //configuro app
 app.use(cors());   //abilito cors su tutte le rotte
 
 app.use(express.json());  
+app.use(
+  session({
+    
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Inizializzazione di Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
 
 mongoose.connect(process.env.MONGO_URI)
  .then(() => console.log('Mongo DB connesso'))
  .catch((err)=> console.error('Errore di connessione', err));
-
+ 
+ app.use("/api/auth", authRoutes);
  app.use('/api/servizi', serviziRoutes);
  app.use('/api/clienti', clientiRoutes);
 

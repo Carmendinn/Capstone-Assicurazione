@@ -2,7 +2,7 @@ import express from "express";
 import Servizi from "../models/Servizi.js";
 //import { sendEmail } from "../services/emailService.js";
 import cloudinaryUploader from "../config/cloudinaryConfig.js";
-
+import { authMiddleware } from "../middlewares/authMiddleware.js"; 
 
 const router = express.Router();
 
@@ -42,13 +42,13 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+router.use(authMiddleware);
 
 // POST / crea un nuovo servizio
 router.post("/", cloudinaryUploader.single("cover"), async (req, res) => {
     try {
       const postData = req.body;
       if (req.file) {
-        // postData.cover = `http://localhost:5001/uploads/${req.file.filename}`;
         postData.cover = req.file.path; // Cloudinary restituirà direttamente il suo url
       }
       const newServizio = new Servizi(postData);
@@ -64,7 +64,7 @@ router.post("/", cloudinaryUploader.single("cover"), async (req, res) => {
       `;
   
       await sendEmail(
-        newServizio.author, // Ovviamente assumendo che newPost.author sia l'email dell'autore
+        newServizio.clienti, // Ovviamente assumendo che newPost.author sia l'email dell'autore
         "Il tuo post è stato correttamente pubblicato",
         htmlContent
       );
