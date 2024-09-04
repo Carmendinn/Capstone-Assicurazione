@@ -4,14 +4,14 @@ import heroImg from '../public/images/freepik-export-20240828101423gt3o.jpeg'
 
 export default function Hero() {
   return (
-    <div className="bg-white  rounded-lg">
+    <div className="bg-white rounded-lg">
       <div className="container mx-auto px-6 py-16 lg:flex lg:items-center lg:justify-between">
         {/* Sezione Testuale */}
         <div className="lg:w-1/2">
-          <h1 className="text-4xl font-bold text-gray-800 lg:text-6xl">
+          <h1 className="text-4xl font-bold text-gray-800 lg:text-6xl font-original hover:font-hover transition-font-family duration-300">
             Proteggiamo il tuo futuro con soluzioni assicurative personalizzate
           </h1>
-          <p className="mt-6 text-lg text-gray-600">
+          <p className="mt-6 text-lg text-gray-600 font-original hover:font-hover transition-font-family duration-300">
             Affidati alla nostra esperienza per trovare l'assicurazione che fa per te. Offriamo piani personalizzati per privati e aziende.
           </p>
         </div>

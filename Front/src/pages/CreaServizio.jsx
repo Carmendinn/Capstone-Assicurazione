@@ -12,6 +12,7 @@ export default function CreaServizio() {
     price: '', // Campo opzionale per il prezzo
     author: '' // Campo per l'email dell'autore
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserEmail = async () => {
@@ -30,7 +31,6 @@ export default function CreaServizio() {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

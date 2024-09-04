@@ -1,6 +1,6 @@
 import express from "express";
 import Servizi from "../models/Servizi.js";
-//import { sendEmail } from "../services/emailService.js";
+import { sendEmail } from "../services/emailService.js";
 import cloudinaryUploader from "../config/cloudinaryConfig.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js"; 
 

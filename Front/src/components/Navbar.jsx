@@ -6,6 +6,7 @@ import logo from '../public/images/logo png.png'
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const [coverFile, setCoverFile] = useState(null);
   const [avatar, setAvatar] = useState("");
   useEffect(() => {
     // Controlla se esiste un token nel localStorage
@@ -33,8 +34,19 @@ const Navbar = () => {
   const handleFileChange = (e) => {
     setCoverFile(e.target.files[0]);
   };
+   // Carica l'avatar se è stato selezionato
+   useEffect(() => {
+    if (coverFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatar(reader.result);
+      };
+      reader.readAsDataURL(coverFile);
+    }
+  }, [coverFile]);
+
   return (
-    <nav className="bg-gray-800">
+    <nav className="bg-gray-800 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center h-16"> {/* Altezza ridotta */}
         {/* Logo a sinistra */}
         <Link to="/" className="text-white text-xl font-bold">

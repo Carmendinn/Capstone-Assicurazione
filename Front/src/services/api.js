@@ -7,11 +7,20 @@ const api = axios.create({
   baseURL: API_URL,
 });
 
+// Aggiungi un'interceptor per includere il token di autenticazione in tutte le richieste
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
 
-
+// Funzioni per le chiamate API
 export const getPosts = () => api.get("/servizi");
 export const getPost = (id) => api.get(`/servizi/${id}`);
-
 
 // UPLOAD: modificata la funzione createPost per gestire FormData
 export const createPost = (postData) =>
@@ -20,8 +29,14 @@ export const createPost = (postData) =>
       "Content-Type": "multipart/form-data",
     },
   });
+
 export const updatePost = (id, postData) =>
-  api.put(`/servizi/${id}`, postData);
+  api.put(`/servizi/${id}`, postData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
 export const deletePost = (id) => api.delete(`/servizi/${id}`);
 
 export const registerUser = (userData) => api.post("/clienti", userData);

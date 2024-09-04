@@ -10,9 +10,8 @@ import DettagliServizio from './pages/DettagliServizio.jsx'
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
-import Search from './pages/Search';
-import { getPosts } from './services/api';
-
+import Search from './pages/Search.jsx';
+import { getPosts } from './services/api.js'
 function App() {
   const [search, setSearch] = useState('');
   const [searchSubmitted, setSearchSubmitted] = useState(false);
@@ -46,6 +45,7 @@ function App() {
     setSearchSubmitted(true);
     setSearch('');
   };
+  
 
   return (
     <Router>

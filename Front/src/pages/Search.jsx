@@ -5,6 +5,7 @@ export default function Search({ search, handleSearch, handleSearchSubmit }) {
   const navigate = useNavigate();
 
   const onSubmit = (e) => {
+    e.preventDefault();
     handleSearchSubmit(e);
     navigate('/search');
   };
@@ -21,7 +22,7 @@ export default function Search({ search, handleSearch, handleSearchSubmit }) {
         <input
           type="search"
           id="default-search"
-          className="block w-full p-4 pl-10 pr-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500 transition-colors duration-300 ease-in-out"
+          className="block w-full p-4 pl-10 pr-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-pink-500 transition-colors duration-300 ease-in-out"
           placeholder="Search..."
           value={search}
           onChange={e => handleSearch(e.target.value)}
