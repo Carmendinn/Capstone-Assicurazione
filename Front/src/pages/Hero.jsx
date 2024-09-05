@@ -1,5 +1,7 @@
 import React from 'react'
 import heroImg from '../public/images/freepik-export-20240828101423gt3o.jpeg'
+import { motion, useAnimation, useInView } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
 
 export default function Hero() {

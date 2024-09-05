@@ -1,60 +1,59 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { loginUser } from "../services/api";
+import { motion, AnimatePresence } from "framer-motion";
 
-  
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
-
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: "", // campo email
-    password: "", // campo password
+    email: "",
+    password: "",
   });
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-
-  const navigate = useNavigate(); // cambio pagina
+  const navigate = useNavigate();
   const location = useLocation();
-  useEffect(() => {
 
+  useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get("token");
-    //const userName = params.get("userName");
 
     if (token) {
       localStorage.setItem("token", token);
-      
       window.dispatchEvent(new Event("storage"));
       window.dispatchEvent(new Event("loginStateChange"));
       navigate("/");
     }
   }, [location, navigate]);
 
-
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value }); 
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     try {
-      const response = await loginUser(formData); 
-      localStorage.setItem("token", response.token); 
-      window.dispatchEvent(new Event("storage")); 
-      console.log("Login effettuato con successo!"); 
-      navigate("/"); 
+      const response = await loginUser(formData);
+      localStorage.setItem("token", response.token);
+      window.dispatchEvent(new Event("storage"));
+      setLoginSuccess(true);
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate("/");
+      }, 2000); // Mostra il messaggio per 2 secondi
     } catch (error) {
-      console.error("Errore durante il login:", error); 
-      alert("Credenziali non valide. Riprova."); 
+      console.error("Errore durante il login:", error);
+      alert("Credenziali non valide. Riprova.");
     }
   };
+
   const handleGoogleLogin = () => {
     window.location.href = `${API_URL}/api/auth/google`;
   };
 
-
-  
   return (
     <div className="container mx-auto mt-8 p-4 max-w-md">
       <h2 className="text-3xl font-semibold mb-6 text-center">Login</h2>
@@ -98,6 +97,19 @@ export default function Login() {
         </svg>
         Accedi con Google
       </button>
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            className="mt-4 p-4 bg-green-100 text-green-800 border border-green-300 rounded"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            Login effettuato con successo!
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  )
-};
+  );
+}

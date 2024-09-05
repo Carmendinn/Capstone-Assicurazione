@@ -1,4 +1,5 @@
 import mailgun from 'mailgun-js';
+import 'dotenv/config';
 
 
 const mg = mailgun({

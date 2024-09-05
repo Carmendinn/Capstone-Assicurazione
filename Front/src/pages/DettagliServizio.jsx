@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getPost, deletePost, updatePost } from "../services/api";
+import { motion } from 'framer-motion';
 
 export default function DettagliServizio() {
   const [post, setPost] = useState({
@@ -84,7 +85,12 @@ export default function DettagliServizio() {
 
   return (
     <div className="container mx-auto p-8 mt-10">
-      <article className="post-detail bg-white rounded-lg shadow-lg overflow-hidden">
+      <motion.article
+        className="post-detail bg-white rounded-lg shadow-lg overflow-hidden"
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <img
           src={post.cover}
           alt={post.title}
@@ -166,7 +172,7 @@ export default function DettagliServizio() {
             </form>
           )}
         </div>
-      </article>
+      </motion.article>
     </div>
   );
 }

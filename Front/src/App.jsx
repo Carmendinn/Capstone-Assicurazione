@@ -1,22 +1,27 @@
 import { useState, useEffect } from 'react';
-
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home";
 import Footer from './components/Footer.jsx';
 import Contatti from './pages/Contatti.jsx';
-import CreaServizio from './pages/CreaServizio.jsx'
-import DettagliServizio from './pages/DettagliServizio.jsx'
+import CreaServizio from './pages/CreaServizio.jsx';
+import DettagliServizio from './pages/DettagliServizio.jsx';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Search from './pages/Search.jsx';
-import { getPosts } from './services/api.js'
+import { getPosts } from './services/api.js';
+import TeamSection from './pages/TeamSection.jsx';
+import FaqSection from './pages/FaqSection.jsx';
+import Testimonials from './pages/Testimonials.jsx';
+import WhatsAppButton from './pages/WhatsappButton.jsx'; // Importa il componente
+
 function App() {
   const [search, setSearch] = useState('');
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -45,7 +50,6 @@ function App() {
     setSearchSubmitted(true);
     setSearch('');
   };
-  
 
   return (
     <Router>
@@ -75,9 +79,13 @@ function App() {
             />
             <Route path="*" element={<NotFound searchTerm={search} />} />
           </Routes>
+          <TeamSection />
+          <Testimonials />
+          <FaqSection />
         </main>
+        <Footer />
+        <WhatsAppButton /> {/* Inserisci il componente WhatsAppButton */}
       </div>
-      <Footer />
     </Router>
   );
 }
