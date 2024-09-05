@@ -1,64 +1,92 @@
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import logo from '../public/images/logo png.png'
-
+import logo from '../public/images/logo png.png';
+import defaultAvatar from '../public/images/default-avatar.png';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const [coverFile, setCoverFile] = useState(null);
-  const [avatar, setAvatar] = useState("");
+  const [avatar, setAvatar] = useState(defaultAvatar);
+
   useEffect(() => {
-    // Controlla se esiste un token nel localStorage
     const checkLoginStatus = () => {
       const token = localStorage.getItem("token");
       setIsLoggedIn(!!token);
     };
 
-    // Controlla lo stato di login all'avvio
     checkLoginStatus();
-
-    // Aggiungi un event listener per controllare lo stato di login
     window.addEventListener("storage", checkLoginStatus);
 
-    // Rimuovi l'event listener quando il componente viene smontato
     return () => {
       window.removeEventListener("storage", checkLoginStatus);
     };
   }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
+    setAvatar(defaultAvatar);
     navigate("/");
   };
+
   const handleFileChange = (e) => {
-    setCoverFile(e.target.files[0]);
-  };
-   // Carica l'avatar se è stato selezionato
-   useEffect(() => {
-    if (coverFile) {
+    const file = e.target.files[0];
+    if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setAvatar(reader.result);
       };
-      reader.readAsDataURL(coverFile);
+      reader.readAsDataURL(file);
     }
-  }, [coverFile]);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
     <nav className="bg-gray-800 sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center h-16"> {/* Altezza ridotta */}
-        {/* Logo a sinistra */}
+      <div className="container mx-auto flex justify-between items-center h-16">
         <Link to="/" className="text-white text-xl font-bold">
-          <img src={logo} alt="Logo" className="w-20 h-auto inline-block" /> {/* Logo mantenuto grande */}
+          <img src={logo} alt="Logo" className="w-20 h-auto inline-block" />
         </Link>
 
-        {/* Link a destra */}
         <ul className="flex space-x-4 items-center">
           <li>
             <Link to="/contacts" className="text-white hover:text-gray-300">
               Contatti
             </Link>
+          </li>
+          <li className="relative">
+            <button
+              onClick={toggleDropdown}
+              className="text-white hover:text-gray-300 focus:outline-none"
+            >
+              Sinistri
+            </button>
+            {isDropdownOpen && (
+              <ul className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <li>
+                  <Link
+                    to="/gestione-sinistri"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={toggleDropdown}
+                  >
+                    Gestione Sinistri
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/carrozzerie-convenzionate"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={toggleDropdown}
+                  >
+                    Carrozzerie Convenzionate
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             {isLoggedIn ? (
@@ -71,14 +99,9 @@ const Navbar = () => {
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-4">
-                <Link to="/login" className="text-white hover:text-gray-200">
-                  Login
-                </Link>
-                <Link to="/register" className="text-white hover:text-gray-200">
-                  Registrati
-                </Link>
-              </div>
+              <Link to="/login" className="text-white hover:text-gray-200">
+                Login
+              </Link>
             )}
           </li>
         </ul>
@@ -92,19 +115,18 @@ const Navbar = () => {
               onChange={handleFileChange}
             />
             <img
-              src={avatar || "https://via.placeholder.com/48"}
+              src={avatar}
               alt="Avatar"
               className="w-12 h-12 rounded-full border-2 border-white shadow-md object-cover"
             />
             <label htmlFor="avatar" className="cursor-pointer">
-              
+              {/* Puoi aggiungere un'icona o un testo qui se lo desideri */}
             </label>
           </div>
         )}
       </div>
     </nav>
   );
-}
-
+};
 
 export default Navbar;

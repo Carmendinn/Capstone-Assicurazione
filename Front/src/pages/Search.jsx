@@ -7,10 +7,19 @@ const Search = ({ search, handleSearch, handleSearchSubmit }) => {
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
+  const handleInputChange = (e) => {
+    handleSearch(e.target.value);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    handleSearchSubmit();
+  };
+
   return (
     <motion.form
-      className="max-w-md mx-auto my-4"
-      onSubmit={handleSearchSubmit}
+      className="max-w-md mx-auto my-4 rounded-full"
+      onSubmit={onSubmit}
     >
       <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-700 sr-only dark:text-white">Search</label>
       <div className="relative">
@@ -22,10 +31,10 @@ const Search = ({ search, handleSearch, handleSearchSubmit }) => {
         <motion.input
           type="search"
           id="default-search"
-          className="block w-full p-4 pl-10 pr-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-pink-500 transition-all duration-300 ease-in-out"
+          className="block w-full p-4 pl-10 pr-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-lime-500 focus:border-lime-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500 transition-all duration-300 ease-in-out"
           placeholder="Search..."
           value={search}
-          onChange={e => handleSearch(e.target.value)}
+          onChange={handleInputChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
           animate={{ width: isFocused ? '100%' : '80%' }}

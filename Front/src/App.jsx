@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home";
@@ -14,11 +14,12 @@ import { getPosts } from './services/api.js';
 import TeamSection from './pages/TeamSection.jsx';
 import FaqSection from './pages/FaqSection.jsx';
 import Testimonials from './pages/Testimonials.jsx';
-import WhatsAppButton from './pages/WhatsappButton.jsx'; // Importa il componente
+import WhatsAppButton from './pages/WhatsappButton.jsx';
+import GestioneSinistri from './pages/GestioneSinistri.jsx';
+import CarrozzerieConvenzionate from './pages/CarrozzerieConvenzionate.jsx';
 
 function App() {
   const [search, setSearch] = useState('');
-  const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
@@ -27,6 +28,7 @@ function App() {
       try {
         const response = await getPosts();
         setPosts(response.data);
+        setFilteredPosts(response.data);
       } catch (error) {
         console.error('Errore nella fetch dei post:', error);
       }
@@ -36,19 +38,22 @@ function App() {
 
   const handleSearch = (value) => {
     setSearch(value);
+    filterPosts(value);
   };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    filterPosts(search);
+  };
+
+  const filterPosts = (searchTerm) => {
     const filtered = posts.filter(post => {
       const title = post.title ? post.title.toLowerCase() : '';
       const author = post.author ? post.author.toLowerCase() : '';
-      const searchLower = search.toLowerCase();
+      const searchLower = searchTerm.toLowerCase();
       return title.includes(searchLower) || author.includes(searchLower);
     });
     setFilteredPosts(filtered);
-    setSearchSubmitted(true);
-    setSearch('');
   };
 
   return (
@@ -64,15 +69,17 @@ function App() {
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Home posts={filteredPosts.length > 0 ? filteredPosts : posts} />} />
+            <Route path="/" element={<Home posts={filteredPosts} />} />
             <Route path="/contacts" element={<Contatti />} />
             <Route path="/admin/new-service" element={<CreaServizio />} />
             <Route path="/create" element={<CreaServizio />} />
             <Route path="/post/:id" element={<DettagliServizio />} />
+            <Route path="/gestione-sinistri" element={<GestioneSinistri />} />
+            <Route path="/carrozzerie-convenzionate" element={<CarrozzerieConvenzionate />} />
             <Route
               path="/search"
               element={
-                searchSubmitted && filteredPosts.length === 0 ?
+                filteredPosts.length === 0 ?
                   <NotFound searchTerm={search} /> :
                   <Navigate to="/" replace />
               }
@@ -84,7 +91,7 @@ function App() {
           <FaqSection />
         </main>
         <Footer />
-        <WhatsAppButton /> {/* Inserisci il componente WhatsAppButton */}
+        <WhatsAppButton />
       </div>
     </Router>
   );

@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 
 export default function Hero() {
   return (
-    <div className="bg-white rounded-lg">
+    <div className="bg-white rounded-2xl">
       <div className="container mx-auto px-6 py-16 lg:flex lg:items-center lg:justify-between">
         {/* Sezione Testuale */}
         <div className="lg:w-1/2">
@@ -21,7 +21,7 @@ export default function Hero() {
         {/* Sezione Immagine */}
         <div className="mt-12 ml-4 lg:mt-0 lg:w-1/2">
           <img
-            className="w-full h-auto rounded-lg shadow-lg"
+            className="w-full h-auto rounded-2xl shadow-lg"
             src={heroImg}
             alt="Assicurazione Immagine"
           />

@@ -20,7 +20,7 @@ const TeamSection = () => {
         {teamMembers.map((member, index) => (
           <motion.div
             key={index}
-            className="relative bg-white rounded-lg overflow-hidden shadow-lg"
+            className="relative bg-white rounded-2xl overflow-hidden shadow-lg"
             whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
           >
             <div className="p-4">

@@ -5,6 +5,13 @@ const faqs = [
   { question: "Quali sono i vostri orari di apertura?", answer: "Siamo aperti dal lunedì al venerdì, dalle 9:00 alle 18:00." },
   { question: "Come posso richiedere un'assicurazione?", answer: "Puoi richiedere un'assicurazione direttamente dal nostro sito web o contattando il nostro servizio clienti." },
   { question: "Quali tipi di assicurazioni offrite?", answer: "Offriamo una vasta gamma di assicurazioni, tra cui auto, casa, vita e aziendali." },
+  { question: "Come posso segnalare un sinistro?", answer: "Puoi segnalare un sinistro chiamando il nostro servizio clienti o utilizzando l'apposita sezione sul nostro sito." },
+  { question: "Quali documenti sono necessari per sottoscrivere una polizza?", answer: "Di solito richiediamo un documento d'identità, il codice fiscale e la documentazione del veicolo o immobile." },
+  { question: "Cosa fare in caso di emergenza?", answer: "In caso di emergenza, contattaci subito tramite il nostro numero verde disponibile 24/7." },
+  { question: "Posso modificare la mia polizza?", answer: "Sì, puoi modificare la tua polizza in qualsiasi momento contattando il nostro servizio clienti." },
+  { question: "Quali sono i metodi di pagamento accettati?", answer: "Accettiamo pagamenti tramite carta di credito, bonifico bancario e PayPal." },
+  { question: "È possibile richiedere una consulenza personalizzata?", answer: "Sì, offriamo consulenze personalizzate per aiutarti a trovare la soluzione assicurativa più adatta alle tue esigenze." },
+  { question: "Come posso annullare la mia polizza?", answer: "Per annullare la tua polizza, contatta il nostro servizio clienti almeno 30 giorni prima della scadenza." },
 ];
 
 const FAQSection = () => {
