@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home";
 import Footer from './components/Footer.jsx';
@@ -22,6 +22,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -38,22 +39,28 @@ function App() {
 
   const handleSearch = (value) => {
     setSearch(value);
+    setIsSearching(value !== '');
     filterPosts(value);
   };
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    setIsSearching(true);
     filterPosts(search);
   };
 
   const filterPosts = (searchTerm) => {
-    const filtered = posts.filter(post => {
-      const title = post.title ? post.title.toLowerCase() : '';
-      const author = post.author ? post.author.toLowerCase() : '';
-      const searchLower = searchTerm.toLowerCase();
-      return title.includes(searchLower) || author.includes(searchLower);
-    });
-    setFilteredPosts(filtered);
+    if (searchTerm === '') {
+      setFilteredPosts(posts);
+    } else {
+      const filtered = posts.filter(post => {
+        const title = post.title ? post.title.toLowerCase() : '';
+        const author = post.author ? post.author.toLowerCase() : '';
+        const searchLower = searchTerm.toLowerCase();
+        return title.includes(searchLower) || author.includes(searchLower);
+      });
+      setFilteredPosts(filtered);
+    }
   };
 
   return (
@@ -69,21 +76,20 @@ function App() {
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Home posts={filteredPosts} />} />
+            <Route 
+              path="/" 
+              element={
+                isSearching && filteredPosts.length === 0 
+                  ? <NotFound searchTerm={search} />
+                  : <Home posts={filteredPosts} />
+              } 
+            />
             <Route path="/contacts" element={<Contatti />} />
             <Route path="/admin/new-service" element={<CreaServizio />} />
             <Route path="/create" element={<CreaServizio />} />
             <Route path="/post/:id" element={<DettagliServizio />} />
             <Route path="/gestione-sinistri" element={<GestioneSinistri />} />
             <Route path="/carrozzerie-convenzionate" element={<CarrozzerieConvenzionate />} />
-            <Route
-              path="/search"
-              element={
-                filteredPosts.length === 0 ?
-                  <NotFound searchTerm={search} /> :
-                  <Navigate to="/" replace />
-              }
-            />
             <Route path="*" element={<NotFound searchTerm={search} />} />
           </Routes>
           <TeamSection />

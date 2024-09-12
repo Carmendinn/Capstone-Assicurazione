@@ -7,7 +7,8 @@ export default function DettagliServizio() {
   const [post, setPost] = useState({
     title: "",
     content: "",
-    cover: null, // Per gestire l'immagine
+    cover: null,
+    category: "",
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { id } = useParams();
@@ -65,19 +66,36 @@ export default function DettagliServizio() {
       const formData = new FormData();
       formData.append("title", post.title);
       formData.append("content", post.content);
+      formData.append("category", post.category);
       if (post.cover instanceof File) {
         formData.append("cover", post.cover);
       }
   
-      await updatePost(id, formData);
-      setPost({
-        ...post,
-        cover: post.cover instanceof File ? URL.createObjectURL(post.cover) : post.cover
-      });
-      setEditingPost(false);
+      console.log('Dati inviati:', Object.fromEntries(formData));
+  
+      const updatedPost = await updatePost(id, formData);
+      console.log('Risposta dal server:', updatedPost);
+  
+      if (updatedPost && updatedPost.data) {
+        setPost(updatedPost.data);
+        setEditingPost(false);
+        alert('Post aggiornato con successo!');
+        navigate('/'); // Reindirizza alla home dopo il salvataggio
+      } else {
+        throw new Error('Risposta dal server non valida');
+      }
     } catch (error) {
       console.error("Errore nell'aggiornamento del post:", error);
       alert(`Errore nell'aggiornamento del post: ${error.message}`);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === 'cover' && files.length > 0) {
+      setPost({ ...post, cover: files[0] });
+    } else {
+      setPost({ ...post, [name]: value });
     }
   };
   
@@ -92,7 +110,7 @@ export default function DettagliServizio() {
         transition={{ duration: 0.5 }}
       >
         <img
-          src={post.cover}
+          src={post.cover instanceof File ? URL.createObjectURL(post.cover) : post.cover}
           alt={post.title}
           className="w-full h-64 object-cover"
         />
@@ -132,8 +150,9 @@ export default function DettagliServizio() {
                 <input
                   type="text"
                   id="title"
+                  name="title"
                   value={post.title}
-                  onChange={(e) => setPost({ ...post, title: e.target.value })}
+                  onChange={handleInputChange}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
@@ -143,10 +162,24 @@ export default function DettagliServizio() {
                 </label>
                 <textarea
                   id="content"
+                  name="content"
                   value={post.content}
-                  onChange={(e) => setPost({ ...post, content: e.target.value })}
+                  onChange={handleInputChange}
                   className="w-full p-2 border border-gray-300 rounded"
                   rows="6"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+                  Categoria
+                </label>
+                <input
+                  type="text"
+                  id="category"
+                  name="category"
+                  value={post.category}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
               <div className="mb-4">
@@ -156,11 +189,16 @@ export default function DettagliServizio() {
                 <input
                   type="file"
                   id="cover"
-                  onChange={(e) => setPost({ ...post, cover: e.target.files[0] })}
+                  name="cover"
+                  onChange={handleInputChange}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
-                {post.cover && typeof post.cover === 'string' && (
-                  <img src={post.cover} alt="Current cover" className="mt-2 w-32 h-32 object-cover" />
+                {post.cover && (
+                  <img 
+                    src={post.cover instanceof File ? URL.createObjectURL(post.cover) : post.cover} 
+                    alt="Current cover" 
+                    className="mt-2 w-32 h-32 object-cover" 
+                  />
                 )}
               </div>
               <button

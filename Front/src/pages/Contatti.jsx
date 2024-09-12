@@ -49,7 +49,7 @@ export default function Contatti() {
             initial="hidden"
             animate="visible"
             variants={contactVariants}
-            whileHover="hover"
+            whilehover="hover"
             variants2={bounceVariants}
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Recapiti Telefonici</h2>
@@ -63,7 +63,7 @@ export default function Contatti() {
             initial="hidden"
             animate="visible"
             variants={contactVariants}
-            whileHover="hover"
+            whilehover="hover"
             variants2={bounceVariants}
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Email</h2>
@@ -77,7 +77,7 @@ export default function Contatti() {
             initial="hidden"
             animate="visible"
             variants={contactVariants}
-            whileHover="hover"
+            whilehover="hover"
             variants2={bounceVariants}
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Indirizzo</h2>
@@ -92,7 +92,7 @@ export default function Contatti() {
             initial="hidden"
             animate="visible"
             variants={contactVariants}
-            whileHover="hover"
+            whilehover="hover"
             variants2={bounceVariants}
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Seguici sui Social</h2>
@@ -102,7 +102,7 @@ export default function Contatti() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-800"
-                whileHover="hover"
+                whilehover="hover"
                 variants={bounceVariants}
               >
                 Facebook
@@ -112,7 +112,7 @@ export default function Contatti() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-800"
-                whileHover="hover"
+                whilehover="hover"
                 variants={bounceVariants}
               >
                 LinkedIn
@@ -122,7 +122,7 @@ export default function Contatti() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-800"
-                whileHover="hover"
+                whilehover="hover"
                 variants={bounceVariants}
               >
                 Instagram
