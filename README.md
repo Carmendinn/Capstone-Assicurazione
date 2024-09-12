@@ -1,4 +1,4 @@
-Il mio progetto per il capstone è la realizzazione di un sito web per un'agenzioa di assicurazione.
+Il mio progetto per il capstone è la realizzazione di un sito web per un'agenzia di assicurazione.
 
 Creato in React con Vite e lo stile è stato gestito con Tailwind e Framer Motion.
 
